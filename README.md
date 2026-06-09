@@ -1,29 +1,40 @@
-# 🤖 Cyphra Chatbot
+#  Cyphra Chatbot
 
-A sophisticated rule-based chatbot built with Python Flask, HTML, CSS, and JavaScript. Cyphra uses pattern matching to provide instant responses based on a customizable JSON-based intelligence engine.
+A sophisticated rule-based chatbot built with Python Flask, HTML, CSS, and JavaScript. Cyphra utilizes pattern matching to deliver instant responses through a customizable, JSON-based intelligence engine.
 
 ## Features
 
-- ✅ **Intelligent Pattern Matching:** Case-insensitive substring matching for flexible conversations.
-- ✅ **Modern UI/UX:** Clean, gradient-based interface with smooth animations and responsive design.
-- ✅ Real-time chat interface
-- ✅ JSON-based rule configuration
-- ✅ Easy to customize and extend
-- ✅ No database required - JSON file based
+-  **Intelligent Pattern Matching:** Case-insensitive substring matching for flexible conversations.
+-  **Modern UI/UX:** Clean, gradient-based interface with smooth animations and responsive design.
+-  Real-time chat interface
+-  JSON-based rule configuration
+-  Easy to customize and extend
+-  No database required - JSON file-based
 
 ## Project Structure
 
 ```
-scrapig/
+cyphra-chatbot/
 ├── app.py                 # Flask backend application
 ├── rules.json             # Chatbot rules and responses
+├── users.json             # Chatbot users
 ├── requirements.txt       # Python dependencies
+├── README.md             # This file
 ├── templates/
 │   └── index.html        # HTML template
-├── static/
-│   ├── style.css         # CSS styling
-│   └── script.js         # JavaScript for frontend
-└── README.md             # This file
+└── static/
+    ├── css/style.css         # CSS styling
+    ├── js/script.js         # JavaScript for frontend
+    ├── audio/
+    |   ├── error-sound.mp3
+    |   ├── success-sound.mp3
+    |   ├── info-sound.mp3
+    |   └── warning-sound.mp3
+    └── images/
+        ├── favicon.png
+        ├── logo.png
+        └── logo1.png
+
 ```
 
 ## Technical Deep-Dive
@@ -64,7 +75,7 @@ The CSS framework uses a **Corporate Architectural Color System Matrix**, utiliz
     ```
 
 ## Intelligence Configuration (rules.json)
-The bot's "brain" is decentralized. You can define complex responses including text and carousels:
+The bot's "brain" is decentralized. You can define complex responses, including text and carousels:
 ```json
 {
   "intent": "features",
@@ -93,7 +104,7 @@ The bot's "brain" is decentralized. You can define complex responses including t
    http://localhost:5000
    ```
 
-3. **Start chatting!** Type your messages and the chatbot will respond based on the predefined rules.
+3. **Start chatting!** Type your messages, and the chatbot will respond based on the predefined rules.
 
 ## How It Works
 
