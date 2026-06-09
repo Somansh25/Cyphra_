@@ -213,7 +213,7 @@ def chat():
         return jsonify({
             'user_message': user_message,
             'bot_response': bot_response,
-            'suggestions': matched_intent.get('suggestions', []),
+            'suggestions': matched_intent.get('suggestions', []) if matched_intent else [],
             'timestamp': datetime.now().isoformat()
         }), 200
     except json.JSONDecodeError as e:
