@@ -1,0 +1,10 @@
+{
+    "somanshch875@gmail.com": {
+        "name": "Somansh Chauhan",
+        "password": "scrypt:32768:8:1$WiP3UrKwe7J6SeHH$753447a4349ae1320c2f122107368fb221e979dcbfbd4e0fc8fe98f9e7025698cb6cc3df3d1d4d35ca2e69c301835e64d2f0bad38e5e3214c67df4aa5ae86747"
+    },
+    "avaniavani@gmail.com": {
+        "name": "Avani Chauhan",
+        "password": "scrypt:32768:8:1$7zpFQtdT6dIiQTk4$fadb1b52a1ba45ede06b4afd05762afd96c4c2f1d7a29a97041c05116153d5967d3757376675c8d61eb26718c7dd2ae48407e75a5553f0f7f63e5adf4dbb6e98"
+    }
+}

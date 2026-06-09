@@ -1,0 +1,253 @@
+{
+  "intents": [
+    {
+      "intent": "greeting",
+      "text": [
+        "Hi",
+        "Hello",
+        "Good morning",
+        "Good afternoon",
+        "Good evening",
+        "Hi there",
+        "Hello there",
+        "Greetings",
+        "How are you?",
+        "Hey",
+        "What's up"
+      ],
+      "responses": [
+        "Hello! Welcome to Cyphra. How can I assist you today?",
+        "Hi there! I'm ready to help. What can I do for you?",
+        "Greetings! How may I assist your conversational journey today?",
+        {
+          "text": "Hello! Welcome to Cyphra. How can I assist you today?",
+          "carousel": []
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Explore Pricing",
+        "Technical FAQ"
+      ]
+    },
+    {
+      "intent": "goodbye",
+      "text": [
+        "Bye",
+        "See you later",
+        "Goodbye",
+        "Have a nice day",
+        "Talk to you later",
+        "I'm leaving",
+        "Farewell",
+        "bye",
+        "leave",
+        "exit"
+      ],
+      "responses": [
+        "Goodbye! Feel free to return anytime.",
+        "See you later! Have a wonderful day.",
+        "Take care! Thank you for visiting Cyphra.",
+        {
+          "text": "Thank you for engaging with Cyphra Core. Your session state remains fully preserved in safe local parameters. Have a great day ahead!",
+          "carousel": []
+        }
+      ],
+      "suggestions": [
+        "Hi",
+        "Platform Features"
+      ]
+    },
+    {
+      "intent": "thanks",
+      "text": [
+        "Thanks",
+        "Thank you",
+        "That's helpful",
+        "Awesome, thanks",
+        "Thank you so much",
+        "awesome thanks",
+        "perfect"
+      ],
+      "responses": [
+        "Happy to help! Let me know if you need anything else.",
+        "Anytime! Always here to assist.",
+        "You're very welcome!",
+        {
+          "text": "It is my absolute pleasure! Let me know if there are any other architecture questions or layout validations required.",
+          "carousel": []
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Explore Pricing",
+        "Goodbye"
+      ]
+    },
+    {
+      "intent": "motivation",
+      "text": [
+        "I feel demotivated",
+        "How can I stay motivated?",
+        "I need motivation",
+        "Feeling low",
+        "Give me some encouragement"
+      ],
+      "responses": [
+        "Remember that every great journey starts with a small step. Keep moving forward!",
+        "Challenges are what make success meaningful. Stay focused and motivated!",
+        "Believe in yourself. You are capable of achieving incredible goals!"
+      ]
+    },
+    {
+      "intent": "payments_refunds",
+      "text": [
+        "How do refunds work?",
+        "Can I return an item?",
+        "Refund process",
+        "How can I get a refund?"
+      ],
+      "responses": [
+        "Our refund process is straightforward. Standard subscription cancellations are processed within 5-7 business days. Please contact support@cyphra.com for specific order details.",
+        "To initiate a refund or return, you can navigate to Account Settings inside your profile or reach out to our dedicated help desk."
+      ]
+    },
+    {
+      "intent": "features",
+      "text": [
+        "what can you do",
+        "features",
+        "capabilities",
+        "tell me about features",
+        "platform features",
+        "modules"
+      ],
+      "responses": [
+        {
+          "text": "Cyphra offers high-performance conversational automation, rule-based custom pipelines, and a gorgeous responsive UI. Check out our main modules:",
+          "carousel": [
+            {
+              "title": "Contextual AI",
+              "description": "Remembers flow context and handles complex matching smoothly.",
+              "badge": "Core"
+            },
+            {
+              "title": "Rich UI Output",
+              "description": "Supports suggestion chips, multi-card carousels, and file streams.",
+              "badge": "UX"
+            },
+            {
+              "title": "Enterprise Security",
+              "description": "Session encryption and XSS-safe response streams.",
+              "badge": "Security"
+            }
+          ]
+        },
+        {
+          "text": "Cyphra delivers low-latency conversational automation, rule-based custom matching pipelines, and an accessible responsive layout engine. Explore our primary core modules:",
+          "carousel": [
+            {
+              "title": "Contextual AI Matching",
+              "description": "Compiles strict regex word boundary matrices to govern flow context smoothly.",
+              "badge": "Core Engine"
+            },
+            {
+              "title": "Rich Multi-Card UX",
+              "description": "Supports real-time suggestion chips, layout carousels, and fluid viewport transitions.",
+              "badge": "UX Framework"
+            },
+            {
+              "title": "Cryptographic Security",
+              "description": "Employs file-backed user data persistence, session protection, and thorough XSS sanitization.",
+              "badge": "Security Node"
+            }
+          ]
+        }
+      ],
+      "suggestions": [
+        "Explore Pricing",
+        "Technical FAQ",
+        "Goodbye"
+      ]
+    },
+    {
+      "intent": "pricing",
+      "text": [
+        "pricing",
+        "plans",
+        "cost",
+        "how much",
+        "explore pricing",
+        "subscription"
+      ],
+      "responses": [
+        {
+          "text": "Cyphra provides transparent tiering optimized for both growing setups and large-scale enterprise clusters:",
+          "carousel": [
+            {
+              "title": "Starter Plan",
+              "description": "Ideal for initial testing. Includes standard rule sets and floating widget configurations.",
+              "badge": "₹0 / mo"
+            },
+            {
+              "title": "Business Plan",
+              "description": "Unlocks dashboard redocking matrices, custom rule uploads, and full local state history storage.",
+              "badge": "₹599 / mo"
+            },
+            {
+              "title": "Enterprise Tier",
+              "description": "Complete isolation clusters, high-concurrency routing layers, and custom API sync support.",
+              "badge": "Contact Sales"
+            }
+          ]
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Technical FAQ",
+        "Goodbye"
+      ]
+    },
+    {
+      "intent": "help",
+      "text": [
+        "help",
+        "support",
+        "faq",
+        "technical faq",
+        "knowledge desk",
+        "how to use"
+      ],
+      "responses": [
+        {
+          "text": "Our Knowledge Desk FAQ matrix is accessible on the main portal. Alternatively, ask me about 'features' or 'pricing' to check capabilities directly.",
+          "carousel": []
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Explore Pricing",
+        "Goodbye"
+      ]
+    },
+    {
+      "intent": "fallback",
+      "text": [
+        ""
+      ],
+      "responses": [
+        "Sorry, I did not understand that. Please rephrase your question or try using one of our quick suggestions below.",
+        "I'm not completely sure I understand. Could you provide more details or pick a topic from the help menu?",
+        {
+          "text": "I could not confidently match that input across our intent pattern matrices. Please rephrase or use one of our dedicated quick links:",
+          "carousel": []
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Explore Pricing",
+        "Technical FAQ"
+      ]
+    }
+  ]
+}
