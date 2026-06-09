@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyphra - Advanced Conversational Platform</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <nav class="navbar">
+        <div class="nav-logo" onclick="navigateTo('landing'); showToast('Welcome to Cyphra!', 'success')"><img src="{{ url_for('static', filename='images/logo1.png') }}" alt="Cyphra" class="nav-logo-img">Cyphra</div>
+        <div class="nav-links">
+            <span class="nav-item active" id="link-landing" onclick="navigateTo('landing')">Home</span>
+            <span class="nav-item" id="link-features" onclick="navigateTo('features')">Features</span>
+            <span class="nav-item" id="link-pricing" onclick="navigateTo('pricing')">Pricing</span>
+            <span class="nav-item" id="link-help" onclick="navigateTo('help')">Help Desk</span>
+            <span class="nav-item dashboard-link hidden" id="link-dashboard" onclick="navigateTo('dashboard')">Dashboard</span>
+        </div>
+        <div class="nav-auth" id="navAuthSection">
+            <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
+            <button class="btn btn-primary" onclick="openModal('signupModal')">Sign Up</button>
+        </div>
+        <div class="user-profile-menu hidden" id="userProfileMenu">
+            <div class="profile-avatar" id="profileAvatarName" onclick="toggleProfileDropdown()">U</div>
+            <div class="profile-dropdown-content" id="profileDropdown">
+                <div class="dropdown-header" id="dropdownUserTitle">User Account</div>
+                <div class="dropdown-item divider" onclick="handleLogout()">Logout</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="spa-container">
+
+        <section id="page-landing" class="page-view active">
+            <div class="hero-section">
+                <h1 class="hero-title">Automate Conversational Architectures with <span class="text-gradient">Cyphra</span></h1>
+                <p class="hero-subtitle">A high-performance rule-based solution engineered with pre-compiled pattern matching clusters and security barriers.</p>
+                <div class="hero-cta-row">
+                    <button class="btn btn-primary btn-large" onclick="handleStartChatting(); showToast('Initializing Chat Interface...', 'info')">
+                        <i class="fa-solid fa-comment "></i>&nbsp; Start Chatting
+                    </button>
+                    <button class="btn btn-secondary btn-large" onclick="navigateTo('features')">Explore Features</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-features" class="page-view">
+            <div class="section-header">
+                <h2>Platform Features</h2>
+                <p>Architectural overview of Cyphra's real-time pattern routing and parsing systems.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <lord-icon
+                            src="https://cdn.lordicon.com/zkiskfnp.json"
+                            trigger="hover"
+                            stroke="bold"
+                            colors="primary:#848484,secondary:#d62e6c"
+                            style="width:48px;height:48px">
+                        </lord-icon>
+                    </div>
+                    <h3>Boundary Matchers</h3>
+                    <p>Leverages strict regular expression word boundaries to process token streams without generating false matches on dense textual sets.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-sharp-duotone fa-solid fa-shield-halved "></i></div>
+                    <h3>XSS-Safe Containers</h3>
+                    <p>Maintains total containment fields using programmatic string bindings, rendering code payloads inert across all browsers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-paperclip "></i></div>
+                    <h3>Client State Serializer</h3>
+                    <p>Encodes thread state history inside browser local storage clusters to survive view changes, refreshes, or active terminations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-sharp-duotone fa-solid fa-rotate "></i></div>
+                    <h3>Adaptive Workspace Docking</h3>
+                    <p>Rebinds living DOM fragments dynamically between independent floating popups and structural dashboard frames on the fly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-pricing" class="page-view">
+            <div class="section-header">
+                <h2>Subscription Tiers</h2>
+                <p>Select a transactional scale optimized for your processing workload requirements.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-title">Starter Core</div>
+                    <div class="pricing-price">₹0<span class="price-duration">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Standard Rule-Based Matching</li>
+                        <li>Floating Chat Console Interface</li>
+                        <li>Local Cache Persistence Layer</li>
+                    </ul>
+                    <button class="btn btn-secondary w-full card-action" onclick="openModal('signupModal')">Provision Free Cluster</button>
+                </div>
+                <div class="pricing-card-plus">
+                    <div class="badge-role">Most Preferred</div>
+                    <div class="pricing-title">Business</div>
+                    <div class="pricing-price">₹599<span class="price-duration">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Strict Alphanumeric Regex Compilations</li>
+                        <li>Dashboard Dynamic Workspace Docking</li>
+                        <li>Comprehensive Intent Rules Editor Access</li>
+                        <li>Priority Multi-Thread Persistence Support</li>
+                    </ul>
+                    <button class="btn btn-primary w-full card-action" onclick="showToast('Deploying Business Node...', 'info')">Deploy Business Node</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-title">Enterprise</div>
+                    <div class="pricing-price">Custom</span></div>
+                    <ul class="pricing-features">
+                        <li>Isolated Multi-Tenant Node Clusters</li>
+                        <li>Unlimited Rules & Layout Assets Mapping</li>
+                        <li>Bespoke Security Architecture Audits</li>
+                        <li>Dedicated SLA & Processing Pipelines</li>
+                    </ul>
+                    <button class="btn btn-primary w-full card-action" onclick="showToast('Contacting system architects pipeline...', 'info')">Contact Architecture Team</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-help" class="page-view">
+            <div class="section-header">
+                <h2>Help Desk</h2>
+                <p>Lookup automated execution documentation and resolve common pipeline queries instantly.</p>
+            </div>
+            <div class="search-box-container">
+                <input type="text" id="faqSearch" placeholder="Type terms to search knowledge documents..." oninput="filterFaqs()" autocomplete="off">
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>How does the compiled alphanumeric matching engine mitigate false positives?</span>
+                        <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+                    </div>
+                    <div class="faq-panel">
+                        <p>The backend wraps all incoming strings with pre-compiled alphanumeric regular expressions using rigid word boundary constraints. This prevents intent tags like short phrases or keywords from incorrectly executing matches when contained inside broader text blocks.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>What is the structural mechanism behind layout rebinding?</span>
+                        <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+                    </div>
+                    <div class="faq-panel">
+                        <p>Instead of rebuilding or copying text state history when a user authenticates, the script executes a programmatic DOM relocation node sequence. The workspace moves the entire active node context seamlessly from the document root into the structural dashboard container slot without breaking focus, properties, or variables.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-trigger" onclick="toggleFaq(this)">
+                        <span>How are user identity hashes handled safely over restarts?</span>
+                        <span class="faq-icon"><i class="fa-solid fa-plus"></i></span>
+                    </div>
+                    <div class="faq-panel">
+                        <p>User credentials undergo secure salting and encryption processing using the Werkzeug security subsystem. This processed block persists directly into an isolated JSON matrix layer, preserving cryptographically verified data boundaries across continuous system reboot lifecycles.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-dashboard" class="page-view">
+            <div class="dashboard-split">
+                <aside class="dashboard-sidebar">
+                    <div class="sidebar-header">
+                        <h3>Session Logs</h3>
+                        <button class="btn-icon" onclick="clearActiveChatStream(); showToast('Workspace cleared successfully.', 'warning')" title="Clear Active Workspace"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    <div class="conversation-logs-list" id="conversationHistoryList">
+                        <div class="log-item active" onclick="loadLogSession('Current Workspace')">
+                            <div class="log-title"><i class="fa-solid fa-comment"></i> Current Workspace</div>
+                            <div class="log-timestamp">Just Now</div>
+                        </div>
+                    </div>
+                </aside>
+                
+                <main class="dashboard-viewport">
+                    <div class="embedded-chat-container" id="dashboardChatContainer"></div>
+                </main>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="floating-widget-wrapper" id="globalFloatingWidget">
+        <button class="floating-launcher" id="chatLauncherBtn" onclick="toggleFloatingChatWindow()">
+            <span class="launcher-open-icon"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Cyphra Chat Icon" class="custom-icon"></span>
+            <span class="launcher-close-icon hidden"><i class="fa-solid fa-xmark"></i></span>
+        </button>
+        
+        <div class="chat-window-box hidden" id="floatingChatWindow">
+            <div class="chat-header">
+                <div class="header-identity">
+                    <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="bot-info">
+                        <span class="bot-name">Cyphra Platform Console</span>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Console Live</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <button class="btn-ctrl" onclick="toggleFloatingChatWindow()" title="Minimize"><i class="fa-solid fa-minus"></i></button>
+                    <button class="btn-ctrl close-btn" onclick="closeFloatingChatWidget()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            
+            <div class="message-stream-container" id="widgetMessageStream">
+                <div class="message-bubble bot-bubble">
+                    <div class="bubble-content">Hello! I'm Cyphra. Type 'features' or just start chatting. I can answer questions about our platform, pricing plans, and more.</div>
+                    <div class="bubble-time">System Active</div>
+                </div>
+            </div>
+
+            <div class="interactive-dock-panel" id="widgetDockPanel"></div>
+            
+            <div class="input-area-dock">
+                <!-- <button class="btn-input-utility" onclick="triggerFileUpload()" title="Attach File"><i class="fa-solid fa-paperclip" style="color: rgb(255, 255, 255);"></i></button> -->
+                <input type="text" class="chat-text-input" id="widgetTextInput" placeholder="Type message here..." onkeydown="handleInputKeyDown(event, 'widget')" autocomplete="off">
+                <!-- <button class="btn-input-utility" onclick="triggerEmojiPicker()" title="Emoji Matrix"><i class="fa-solid fa-face-smile" style="color: rgb(255, 255, 255);"></i></button> -->
+                <button class="btn-send-execute" onclick="executeMessageSubmission('widget')"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h6 class="footer-title">Cyphra Technologies Inc.</h6>
+            <p class="footer-copy">&copy; 2026 Cyphra Technologies Inc. All core operational rights reserved.</p>
+            <div class="footer-links">
+                <span onclick="showToast('Activating Privacy Policy...', 'info')">Privacy Policy</span>
+                <span onclick="showToast('Activating Terms of Service...', 'info')">Terms of Service</span>
+            </div>
+            <div class="footer-socials">
+                <span class="social-icon-placeholder" title="GitHub" onclick="showToast('Redirecting to GitHub Profile...', 'info')"><a href="https://github.com/Somansh25/" target="_blank"><i class="fa-brands fa-github"></i></a></span>
+                <span class="social-icon-placeholder" title="LinkedIn" onclick="showToast('Redirecting to LinkedIn Profile...', 'info')"><a href="https://www.linkedin.com/in/somanshchauhan/" target="_blank"><i class="fa-brands fa-linkedin"></i></a></span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay hidden" id="loginModal" onclick="handleModalOutSideClick(event, 'loginModal')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Login to Cyphra Workspace</h3>
+                <span class="modal-close" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="support@cyphra.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Security Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+                <div id="loginErrorMsg" class="error-msg-block hidden"></div>
+                <button class="btn btn-primary w-full" onclick="executeLoginFlow()">Authenticate Account</button>
+                <div class="text-center mt-4">
+                    <label for="signupEmail">Don't have an account? </label>
+                    <button class="btn-link btn-link-secondary" onclick="switchModal('signupModal', 'loginModal')">Sign up here</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="signupModal" onclick="handleModalOutSideClick(event, 'signupModal')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Create Account</h3>
+                <span class="modal-close" onclick="closeModal('signupModal')"><i class="fa-solid fa-xmark"></i></span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" class="form-control" placeholder="Enter Full Name" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" class="form-control" placeholder="username@domain.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" class="form-control" placeholder="Create Secure Password" required autocomplete="new-password">
+                </div>
+                <div id="signupErrorMsg" class="error-msg-block hidden"></div>
+                <button class="btn btn-primary w-full" onclick="executeSignupFlow()">Sign In</button>
+                <div class="text-center mt-4">
+                    <label for="loginEmail">Already have an account? </label>
+                    <button class="btn-link btn-link-secondary" onclick="switchModal('loginModal', 'signupModal')">Login here</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <input type="file" id="globalFileInputHook" class="hidden" onchange="handleFileHookSelection(event)"> -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
