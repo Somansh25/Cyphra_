@@ -14,7 +14,11 @@ app.secret_key = os.environ.get("CYPHRA_SECRET_KEY", "b3af9281cda1426ea9e1e55d5b
 # Strict workspace path derivations relative to module root
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
-USERS_FILE = os.path.join(BASE_DIR, 'users.json')
+
+# Production vs Development path selection
+# If the cloud platform provides a permanent storage directory, use it. Otherwise, use local BASE_DIR.
+PERSISTENT_DIR = os.environ.get("PERSISTENT_STORAGE_DIR", BASE_DIR)
+USERS_FILE = os.path.join(PERSISTENT_DIR, 'users.json')
 
 def initialize_user_cluster():
     #Ensures the identity storage exists and handles permission errors gracefully.
@@ -231,6 +235,7 @@ def chat():
             'suggestions': []
         }), 500
 
+compile_optimized_intent_matrix()
+
 if __name__ == '__main__':
-    compile_optimized_intent_matrix()
     app.run(debug=True)
