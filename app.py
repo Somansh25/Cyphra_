@@ -29,7 +29,7 @@ try:
     db_error = None
     print("MongoDB collections initialized Successfully!")
 except Exception as e:
-    db_error = str(e)
+    db_error = f"[NEW DEPLOYMENT] {str(e)}"
     app.logger.error(f"Critical Database Connectivity Interruption: {e}")
 
 def initialize_user_cluster():
