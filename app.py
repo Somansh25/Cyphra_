@@ -1,4 +1,7 @@
 #Cyphra Core Backend - Implements highly secure user authentication, file-backed identity clusters, and optimized regular expression intent parsing boundaries.
+# ==========================================
+# 1. ALL IMPORTS MUST GO FIRST
+# ==========================================
 import os
 import re
 import json
@@ -6,32 +9,35 @@ import random
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
+import certifi
+from pymongo import MongoClient 
 
 app = Flask(__name__)
-# Cryptographically sound session protection
 app.secret_key = os.environ.get("CYPHRA_SECRET_KEY", "b3af9281cda1426ea9e1e55d5bb26cf4042617a2ee34")
 
-# Strict workspace path derivations relative to module root
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
 
-# Extract database string from Vercel environment variables securely
+# ==========================================
+# 2. DEFINE GLOBAL VARIABLES
+# ==========================================
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am6Hm@cyphra-prod.hb4os4r.mongodb.net/cyphra-prod?appName=cyphra-prod")
 
 users_collection = None
-db_error = "Database connection not attempted yet."
+db_error = None
 
+# ==========================================
+# 3. NOW RUN THE DATABASE INITIALIZATION
+# ==========================================
 try:
-    # Initialize secure MongoDB cloud connection pipeline
     client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
     db = client['cyphra-prod']
     users_collection = db['users']
-    db_error = None
-    print("MongoDB collections initialized Successfully!")
+    print("MongoDB collections initialized successfully!")
 except Exception as e:
     db_error = f"[NEW DEPLOYMENT] {str(e)}"
     app.logger.error(f"Critical Database Connectivity Interruption: {e}")
-
+ 
 def initialize_user_cluster():
     # Keeping this as an empty function so your code doesn't break if referenced elsewhere
     pass
