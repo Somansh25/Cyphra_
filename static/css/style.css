@@ -4,8 +4,8 @@
  */
 
 :root {
-    /* Precise Color Code Assignments */
     --bg-primary: #141018;
+    --bg-secondary: #141018f2;
     --text-dark-contrast: #141018;
     --text-main: #D9D9D9;
     
@@ -20,6 +20,27 @@
     --surface-card: #1C1722;
     --surface-bubble-user: #261D2F;
     --border-subtle: rgba(214, 46, 108, 0.15);
+    --transition-standard: all 0.2s ease-in-out;
+}
+
+/* Light Theme Palette Overrides */
+[data-theme="light"] {
+    --bg-primary: #fcf8f5;
+    --bg-secondary: #d5cacef7;
+    --text-dark-contrast: #2A2735;
+    --text-main: #34383C;
+    
+    --event-grad-1: #A2163E;
+    --event-grad-2: #D62E6C;
+    
+    --badge-pink: #D62E6C;
+    --border-interactive: #D62E6C;
+    --username-crimson: #A2163E;
+    
+    /* System Structural Bounds variables */
+    --surface-card: #FFFFFF;
+    --surface-bubble-user: #F5ECEF;
+    --border-subtle: rgba(227, 130, 177, 0.2);
     --transition-standard: all 0.2s ease-in-out;
 }
 
@@ -54,7 +75,7 @@ body {
 
 /* Top Dynamic Navigation Bar Component Layout */
 .navbar {
-    background-color: rgba(20, 16, 24, 0.95);
+    background-color: var(--bg-secondary); /* Updated from rgba(20, 16, 24, 0.95) */
     border-bottom: 1px solid var(--border-subtle);
     padding: 16px 40px;
     display: flex;
@@ -249,7 +270,7 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 40px;
+    padding: 16px 40px;
     animation: fadeIn 0.25s ease-in-out;
 }
 
@@ -297,7 +318,7 @@ body {
 /* 2. Platform Features View Layout */
 .section-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .section-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
@@ -305,6 +326,7 @@ body {
 
 .features-grid {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 30px;
 }
@@ -315,8 +337,7 @@ body {
     padding: 40px;
     border-radius: 16px;
     transition: var(--transition-standard);
-    flex: 1 1 calc(25% - 23px); 
-    min-width: 310px;
+    flex: 1 1 calc(50% - 15px);
 }
 
 .feature-card:hover {
@@ -476,7 +497,7 @@ body {
 }
 
 .dashboard-sidebar {
-    width: 320px;
+    width: 20%;
     background-color: #110D15;
     border-right: 1px solid var(--border-subtle);
     display: flex;
