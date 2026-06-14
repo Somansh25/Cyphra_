@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await checkIdentityStatus();
     initializeChatStateHistory();
     initializeDefaultStateViews();
+    initializeThemeEngine();
 });
 
 // Sync server-side session token metadata states
@@ -57,6 +58,9 @@ function navigateTo(targetRoute) {
     });
     const activeLink = document.getElementById(`link-${targetRoute}`);
     if (activeLink) activeLink.classList.add('active');
+
+    const activeSidebarLink = document.getElementById(`sidebar-link-${targetRoute}`);
+    if (activeSidebarLink) activeSidebarLink.classList.add('active');
 
     // Synchronize Chat Widget placement bounds to clear dashboard collisions
     const widgetWrapper = document.getElementById('globalFloatingWidget');
@@ -535,6 +539,18 @@ function handleModalOutSideClick(event, modalId) {
     // Implementation to close modal when clicking the overlay backdrop
     if (event.target.id === modalId) {
         closeModal(modalId);
+    }
+}
+/**
+ * Mobile Navigation Menu Toggler
+ */
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById('mobilePopupSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+
+    if (sidebar && backdrop) {
+        sidebar.classList.toggle('active');
+        backdrop.classList.toggle('active');
     }
 }
 
