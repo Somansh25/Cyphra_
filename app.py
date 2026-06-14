@@ -120,7 +120,7 @@ def signup():
     #Validates inputs and provisions a unique user credentials node inside storage.
     try:
         if users_collection is None:
-            return jsonify({'success': False, 'message': 'Database connection is offline. Reason: {db_error}'}), 503
+            return jsonify({'success': False, 'message': f'Database connection is offline. Reason: {db_error}'}), 503
         
         data = request.json or {}
         email = data.get('email', '').strip().lower()
@@ -156,7 +156,7 @@ def signup():
 def login():
     try:
         if users_collection is None:
-            return jsonify({'success': False, 'message': 'Database connection is offline.'}), 503
+            return jsonify({'success': False, 'message': f'Database connection is offline. Reason: {db_error}'}), 503
         
         data = request.json or {}
         email = data.get('email', '').strip().lower()
