@@ -21,7 +21,7 @@ MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am
 try:
     # Initialize secure MongoDB cloud connection pipeline
     client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
-    db = client['cyphra_db']
+    db = client['cyphra-prod']
     users_collection = db['users']
 except Exception as e:
     app.logger.error(f"Critical Database Connectivity Interruption: {e}")
@@ -124,20 +124,22 @@ def signup():
         if not email or not password or not name:
             return jsonify({'success': False, 'message': 'All fields are required.'}), 400
             
-        user_matrix = load_authenticated_users()
-        if email in user_matrix:
+        # Direct cluster lookup to find matching email indices
+        existing_user = users_collection.find_one({'email': email})
+        if existing_user:
             return jsonify({'success': False, 'message': 'Email already registered.'}), 409
             
-        user_matrix[email] = {
+        # Write only this single user document payload over the network pipeline
+        new_user_document = {
+            'email': email,
             'name': name,
             'password': generate_password_hash(password)
         }
+        users_collection.insert_one(new_user_document)
         
-        if save_authenticated_users(user_matrix):
-            session['user'] = email
-            session['user_name'] = name
-            return jsonify({'success': True, 'name': name}), 201
-        return jsonify({'success': False, 'message': 'Failed to save user.'}), 500
+        session['user'] = email
+        session['user_name'] = name
+        return jsonify({'success': True, 'name': name}), 201
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
@@ -148,11 +150,13 @@ def login():
         email = data.get('email', '').strip().lower()
         password = data.get('password', '')
         
-        user_matrix = load_authenticated_users()
-        if email in user_matrix and check_password_hash(user_matrix[email]['password'], password):
+        # Selectively stream only the specific user account entry matching the client email
+        user_record = users_collection.find_one({'email': email})
+        
+        if user_record and check_password_hash(user_record['password'], password):
             session['user'] = email
-            session['user_name'] = user_matrix[email]['name']
-            return jsonify({'success': True, 'name': user_matrix[email]['name']}), 200
+            session['user_name'] = user_record['name']
+            return jsonify({'success': True, 'name': user_record['name']}), 200
             
         return jsonify({'success': False, 'message': 'Invalid credentials.'}), 401
     except Exception as e:
