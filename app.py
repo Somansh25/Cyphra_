@@ -15,52 +15,51 @@ app.secret_key = os.environ.get("CYPHRA_SECRET_KEY", "b3af9281cda1426ea9e1e55d5b
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
 
-# Production vs Development path selection
-# If the cloud platform provides a permanent storage directory, use it. Otherwise, use local BASE_DIR.
-PERSISTENT_DIR = os.environ.get("PERSISTENT_STORAGE_DIR", BASE_DIR)
-USERS_FILE = os.path.join(PERSISTENT_DIR, 'users.json')
+# Extract database string from Vercel environment variables securely
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am6Hm@cyphra-prod.hb4os4r.mongodb.net/cyphra-prod?appName=cyphra-prod")
+
+try:
+    # Initialize secure MongoDB cloud connection pipeline
+    client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+    db = client['cyphra_db']
+    users_collection = db['users']
+except Exception as e:
+    app.logger.error(f"Critical Database Connectivity Interruption: {e}")
 
 def initialize_user_cluster():
-    #Ensures the identity storage exists and handles permission errors gracefully.
-    if not os.path.exists(USERS_FILE):
-        try:
-            # Ensure directory exists (useful for some deployment volumes)
-            os.makedirs(os.path.dirname(USERS_FILE), exist_ok=True)
-            
-            default_identity = {
-                "somanshch875@gmail.com": {
-                    "name": "Somansh Chauhan",
-                    "password": generate_password_hash("password123")
-                }
-            }
-            with open(USERS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(default_identity, f, indent=4)
-            app.logger.info("Identity persistence layer initialized successfully.")
-        except PermissionError:
-            app.logger.error("Critical: No write permissions for users.json. Check deployment environment.")
-        except Exception as e:
-            app.logger.error(f"Unexpected error during identity initialization: {e}")
-
-initialize_user_cluster()
+    # Keeping this as an empty function so your code doesn't break if referenced elsewhere
+    pass
 
 def load_authenticated_users():
-    #Safely ingests persistent identity data records with validation.
+    #Queries documents from cloud cluster and builds the mapping matrix dictionary
+    user_matrix = {}
     try:
-        if os.path.exists(USERS_FILE):
-            with open(USERS_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
+        for user in users_collection.find():
+            user_matrix[user['email']] = {
+                'name': user['name'],
+                'password': user['password']
+            }
     except Exception as e:
-        app.logger.error(f"Failed to read identity configuration stream: {e}")
-    return {}
+        app.logger.error(f"Failed to fetch identity maps from cloud database: {e}")
+    return user_matrix
 
 def save_authenticated_users(user_data_matrix):
-    #Commits updated authentication states directly to private storage maps.
+    #Syncs the user identity matrix entries directly into persistent cloud records
     try:
-        with open(USERS_FILE, 'w', encoding='utf-8') as f:
-            json.dump(user_data_matrix, f, indent=4)
+        for email, details in user_data_matrix.items():
+            users_collection.update_one(
+                {'email': email},
+                {
+                    '$set': {
+                        'name': details['name'],
+                        'password': details['password']
+                    }
+                },
+                upsert=True # Inserts account if missing, updates it if already present
+            )
         return True
     except Exception as e:
-        app.logger.error(f"Failed to write identity configuration state: {e}")
+        app.logger.error(f"Failed to sync identity updates to cloud database: {e}")
         return False
 
 def load_conversational_rules():
