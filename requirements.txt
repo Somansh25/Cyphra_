@@ -8,6 +8,7 @@ blinker==1.9.0
 certifi==2026.2.25
 click==8.3.1
 colorama==0.4.6
+dnspython==2.8.0
 fastapi==0.133.1
 Flask==3.0.3
 Flask-Cors==4.0.1
@@ -32,6 +33,7 @@ pydantic_core==2.41.5
 Pygments==2.19.2
 pyinstaller==6.20.0
 pyinstaller-hooks-contrib==2026.5
+pymongo==4.17.0
 python-engineio==4.13.1
 python-multipart==0.0.22
 python-socketio==5.16.1
