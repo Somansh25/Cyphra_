@@ -18,6 +18,8 @@ RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
 # Extract database string from Vercel environment variables securely
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am6Hm@cyphra-prod.hb4os4r.mongodb.net/cyphra-prod?appName=cyphra-prod")
 
+users_collection = None
+
 try:
     # Initialize secure MongoDB cloud connection pipeline
     client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
@@ -113,6 +115,9 @@ def index():
 def signup():
     #Validates inputs and provisions a unique user credentials node inside storage.
     try:
+        if users_collection is None:
+            return jsonify({'success': False, 'message': 'Database connection is offline.'}), 503
+        
         data = request.json or {}
         email = data.get('email', '').strip().lower()
         password = data.get('password', '')
@@ -146,6 +151,9 @@ def signup():
 @app.route('/api/auth/login', methods=['POST'])
 def login():
     try:
+        if users_collection is None:
+            return jsonify({'success': False, 'message': 'Database connection is offline.'}), 503
+        
         data = request.json or {}
         email = data.get('email', '').strip().lower()
         password = data.get('password', '')
