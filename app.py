@@ -19,13 +19,17 @@ RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am6Hm@cyphra-prod.hb4os4r.mongodb.net/cyphra-prod?appName=cyphra-prod")
 
 users_collection = None
+db_error = "Database connection not attempted yet."
 
 try:
     # Initialize secure MongoDB cloud connection pipeline
     client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
     db = client['cyphra-prod']
     users_collection = db['users']
+    db_error = None
+    print("MongoDB collections initialized Successfully!")
 except Exception as e:
+    db_error = str(e)
     app.logger.error(f"Critical Database Connectivity Interruption: {e}")
 
 def initialize_user_cluster():
@@ -116,7 +120,7 @@ def signup():
     #Validates inputs and provisions a unique user credentials node inside storage.
     try:
         if users_collection is None:
-            return jsonify({'success': False, 'message': 'Database connection is offline.'}), 503
+            return jsonify({'success': False, 'message': 'Database connection is offline. Reason: {db_error}'}), 503
         
         data = request.json or {}
         email = data.get('email', '').strip().lower()
