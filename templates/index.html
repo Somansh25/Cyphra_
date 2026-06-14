@@ -14,25 +14,52 @@
 
     <div id="toastContainer" class="toast-container"></div>
 
+    <div class="sidebar-backdrop mobile-only" id="sidebarBackdrop" onclick="toggleMobileSidebar()"></div>
+
+    <aside class="mobile-popup-sidebar mobile-only" id="mobilePopupSidebar">
+        <div class="sidebar-top-bar">
+            <span>Menu</span>
+            <button class="sidebar-close-btn mobile-only" onclick="toggleMobileSidebar()"><i class="fa-solid fa-times"></i></button>
+        </div>
+        
+        <div class="nav-links mobile-only-links mobile-only">
+            <span class="nav-item active" id="sidebar-link-landing" onclick="navigateTo('landing'); toggleMobileSidebar();">Home</span>
+            <span class="nav-item" id="sidebar-link-features" onclick="navigateTo('features'); toggleMobileSidebar();">Features</span>
+            <span class="nav-item" id="sidebar-link-pricing" onclick="navigateTo('pricing'); toggleMobileSidebar();">Pricing</span>
+            <span class="nav-item" id="sidebar-link-help" onclick="navigateTo('help'); toggleMobileSidebar();">Help Desk</span>
+            <span class="nav-item dashboard-link hidden" id="sidebar-link-dashboard" onclick="navigateTo('dashboard'); toggleMobileSidebar();">Dashboard</span>
+        </div>
+    </aside>
+
     <nav class="navbar">
         <div class="nav-logo" onclick="navigateTo('landing'); showToast('Welcome to Cyphra!', 'success')"><img src="{{ url_for('static', filename='images/logo1.png') }}" alt="Cyphra" class="nav-logo-img">Cyphra</div>
-        <div class="nav-links">
+        
+        <div class="nav-links desktop-only">
             <span class="nav-item active" id="link-landing" onclick="navigateTo('landing')">Home</span>
             <span class="nav-item" id="link-features" onclick="navigateTo('features')">Features</span>
             <span class="nav-item" id="link-pricing" onclick="navigateTo('pricing')">Pricing</span>
             <span class="nav-item" id="link-help" onclick="navigateTo('help')">Help Desk</span>
             <span class="nav-item dashboard-link hidden" id="link-dashboard" onclick="navigateTo('dashboard')">Dashboard</span>
         </div>
+        
         <div class="nav-auth" id="navAuthSection">
             <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
             <button class="btn btn-primary" onclick="openModal('signupModal')">Sign Up</button>
         </div>
+        
         <div class="user-profile-menu hidden" id="userProfileMenu">
             <div class="profile-avatar" id="profileAvatarName" onclick="toggleProfileDropdown()">U</div>
             <div class="profile-dropdown-content" id="profileDropdown">
                 <div class="dropdown-header" id="dropdownUserTitle">User Account</div>
                 <div class="dropdown-item divider" onclick="handleLogout()">Logout</div>
             </div>
+        </div>
+
+        <div class="nav-left mobile-only" id="navLeftSection">
+            <button class="menu-toggle-btn dashboard-contents mobile-only" onclick="toggleMobileSidebar()" aria-label="Toggle Navigation Menu">
+                <i class="fa-duotone fa-solid fa-bars"></i>
+                <span class="menu-toggle-text">Menu</span>
+            </button>
         </div>
     </nav>
 
@@ -173,7 +200,7 @@
             <div class="dashboard-split">
                 <aside class="dashboard-sidebar">
                     <div class="sidebar-header">
-                        <h3>Session Logs</h3>
+                        <h3>Clear Session Logs</h3>
                         <button class="btn-icon" onclick="clearActiveChatStream(); showToast('Workspace cleared successfully.', 'warning')" title="Clear Active Workspace"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                     <div class="conversation-logs-list" id="conversationHistoryList">
