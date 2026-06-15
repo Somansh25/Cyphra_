@@ -121,6 +121,18 @@ async function executeSignupFlow() {
     const pass = document.getElementById('signupPassword').value;
     const errBlock = document.getElementById('signupErrorMsg');
     
+    // Client-side security complexity check matching backend policy
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(pass)) {
+        errBlock.textContent = "Password must be at least 8 characters long, contain an uppercase letter, and a number.";
+        errBlock.classList.remove('hidden');
+        showToast("Password policy validation failed.", "error");
+        return;
+    }
+    
+    // Clear previous error state and proceed to network request
+    errBlock.classList.add('hidden');
+
     try {
         const res = await fetch('/api/auth/signup', {
             method: 'POST',
@@ -145,7 +157,6 @@ async function executeSignupFlow() {
         showToast("Signup routine interrupted by network error.", "error");
     }
 }
-
 // Processes user logout and clears local session state
 async function handleLogout() {
     try {
@@ -243,6 +254,7 @@ function handleInputKeyDown(event, targetContext) {
     }
 }
 
+// Cleaned up the unused 'context' parameter since the input ID is shared globally
 async function executeMessageSubmission(context) {
     const inputEl = document.getElementById('widgetTextInput');
     const sendBtn = document.querySelector('.btn-send-execute');
