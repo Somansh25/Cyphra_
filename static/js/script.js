@@ -1,8 +1,6 @@
-/**
- * Cyphra State Control Logic Pipeline
- * Architectural SPA Navigation, Session Bounds Management, and Real-time Component Rendering Matrix
- */
+//Cyphra State Control Logic Pipeline - Architectural Navigation, Session Bounds Management, and Real-time Component Rendering Matrix
 
+// Application state store for session, navigation, and chat history
 let appState = {
     authenticated: false,
     userName: "",
@@ -12,15 +10,14 @@ let appState = {
     activeFileInputTarget: null
 };
 
-// Application Init Engine Hook
+// Application entry point to initialize state and UI components
 document.addEventListener("DOMContentLoaded", async () => {
     await checkIdentityStatus();
     initializeChatStateHistory();
     initializeDefaultStateViews();
-    initializeThemeEngine();
 });
 
-// Sync server-side session token metadata states
+// Synchronize frontend state with the server session status
 async function checkIdentityStatus() {
     try {
         const res = await fetch('/api/auth/status');
@@ -35,7 +32,7 @@ async function checkIdentityStatus() {
     }
 }
 
-// Single Page Application View Swapper Routing Matrix
+// Centralized view orchestration engine for dynamic navigation
 function navigateTo(targetRoute) {
     if (targetRoute === 'dashboard' && !appState.authenticated) {
         openModal('loginModal');
@@ -45,24 +42,25 @@ function navigateTo(targetRoute) {
     
     appState.activeRoute = targetRoute;
     
-    // Cycle active markers on Document DOM elements
-    document.querySelectorAll('.page-view').forEach(view => {
+    // Toggle visibility of the target application view stage
+    document.querySelectorAll('.app-view-stage').forEach(view => {
         view.classList.remove('active');
     });
-    const selectedView = document.getElementById(`page-${targetRoute}`);
+    const selectedView = document.getElementById(`view-${targetRoute}`);
     if (selectedView) selectedView.classList.add('active');
     
-    // FIXED: Process Navbar active indicators by matching accurate element IDs instead of textContent strings
+    // Update active state for navigation items
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
     });
+    
     const activeLink = document.getElementById(`link-${targetRoute}`);
     if (activeLink) activeLink.classList.add('active');
 
     const activeSidebarLink = document.getElementById(`sidebar-link-${targetRoute}`);
     if (activeSidebarLink) activeSidebarLink.classList.add('active');
 
-    // Synchronize Chat Widget placement bounds to clear dashboard collisions
+    // Handle chat widget rebinding between dashboard and floating states
     const widgetWrapper = document.getElementById('globalFloatingWidget');
     
     if (targetRoute === 'dashboard') {
@@ -74,6 +72,7 @@ function navigateTo(targetRoute) {
     }
 }
 
+// Handler for the "Start Chatting" button action
 function handleStartChatting() {
     if (appState.authenticated) {
         navigateTo('dashboard');
@@ -82,7 +81,7 @@ function handleStartChatting() {
     }
 }
 
-// Authentication Execution Chains
+// Handles user login submission and session establishment
 async function executeLoginFlow() {
     const email = document.getElementById('loginEmail').value;
     const pass = document.getElementById('loginPassword').value;
@@ -102,7 +101,6 @@ async function executeLoginFlow() {
             mapAuthenticatedIdentity(data.name);
             showToast(`Welcome back, ${data.name}!`, "success");
             navigateTo('dashboard');
-            // Sync chat history for newly logged-in user
             initializeChatStateHistory();
         } else {
             errBlock.textContent = data.message;
@@ -116,6 +114,7 @@ async function executeLoginFlow() {
     }
 }
 
+// Handles user registration submission
 async function executeSignupFlow() {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
@@ -147,19 +146,20 @@ async function executeSignupFlow() {
     }
 }
 
+// Processes user logout and clears local session state
 async function handleLogout() {
     try {
         await fetch('/api/auth/logout', { method: 'POST' });
         clearAuthenticatedIdentity();
         showToast("Session authentication token shredded.", "info");
         navigateTo('landing');
-        // Purge user-specific history context
         initializeChatStateHistory();
     } catch (e) {
         showToast("Error processing system logout routine.", "error");
     }
 }
 
+// Updates UI elements to reflect a logged-in user state
 function mapAuthenticatedIdentity(name) {
     appState.authenticated = true;
     appState.userName = name;
@@ -172,6 +172,7 @@ function mapAuthenticatedIdentity(name) {
     document.getElementById('dropdownUserTitle').textContent = name;
 }
 
+// Resets UI elements to reflect a guest or logged-out state
 function clearAuthenticatedIdentity() {
     appState.authenticated = false;
     appState.userName = "";
@@ -182,7 +183,7 @@ function clearAuthenticatedIdentity() {
     document.getElementById('profileDropdown').classList.remove('show');
 }
 
-// Floating Widget State Intercepts
+// Toggles the visibility of the floating chat window
 function toggleFloatingChatWindow(forceOpen = false) {
     const win = document.getElementById('floatingChatWindow');
     const openIcon = document.querySelector('.launcher-open-icon');
@@ -204,6 +205,7 @@ function toggleFloatingChatWindow(forceOpen = false) {
     }
 }
 
+// Closes the floating chat widget explicitly
 function closeFloatingChatWidget() {
     document.getElementById('floatingChatWindow').classList.add('hidden');
     document.querySelector('.launcher-open-icon').classList.remove('hidden');
@@ -211,7 +213,7 @@ function closeFloatingChatWidget() {
     appState.widgetOpen = false;
 }
 
-// Re-binding structural engines between floating frame and dashboard matrix viewports
+// Moves the chat window DOM element into the dashboard viewport
 function rebindChatWindowToDashboard() {
     const winBox = document.getElementById('floatingChatWindow');
     const targetDash = document.getElementById('dashboardChatContainer');
@@ -222,6 +224,7 @@ function rebindChatWindowToDashboard() {
     }
 }
 
+// Moves the chat window DOM element back to the floating widget wrapper
 function rebindChatWindowToFloatingWidget() {
     const winBox = document.getElementById('floatingChatWindow');
     const targetFloat = document.getElementById('globalFloatingWidget');
@@ -297,6 +300,7 @@ async function executeMessageSubmission(context) {
     }
 }
 
+// Appends a message bubble to the chat stream UI
 function renderMessageBubble(text, bubbleType, saveToHistory = false) {
     const stream = document.getElementById('widgetMessageStream');
     if (!stream) return;
@@ -306,7 +310,6 @@ function renderMessageBubble(text, bubbleType, saveToHistory = false) {
     
     const content = document.createElement('div');
     content.classList.add('bubble-content');
-    // Strong sanitization layer protecting execution context from XSS strings
     content.textContent = text;
     
     const timestamp = document.createElement('div');
@@ -317,16 +320,15 @@ function renderMessageBubble(text, bubbleType, saveToHistory = false) {
     wrapper.appendChild(timestamp);
     stream.appendChild(wrapper);
     
-    // Safe fluid programmatic viewport scroll loop activation
     stream.scrollTop = stream.scrollHeight;
 
-    // Save state context natively if flag is active
     if (saveToHistory) {
         appState.chatHistory.push({ text: text, bubbleType: bubbleType });
         localStorage.setItem('cyphra_chat_history', JSON.stringify(appState.chatHistory));
     }
 }
 
+// Injects a typing animation placeholder while waiting for a response
 function injectStreamingIndicator() {
     const stream = document.getElementById('widgetMessageStream');
     const loader = document.createElement('div');
@@ -339,19 +341,17 @@ function injectStreamingIndicator() {
     return uid;
 }
 
+// Removes the typing animation placeholder
 function removeStreamingIndicator(uid) {
     const loader = document.getElementById(uid);
     if (loader) loader.remove();
 }
 
-// ==========================================
-// CLIENT PERSISTENCE STATE SERIALIZER (FIX)
-// ==========================================
+// Recovers previous chat history from localStorage based on current user session
 function initializeChatStateHistory() {
     const currentUser = appState.authenticated ? appState.userName : "guest_session";
     const cachedUser = localStorage.getItem('cyphra_active_user') || "guest_session";
 
-    // If active identity shifts, drop volatile cache scopes instantly
     if (cachedUser !== currentUser) {
         clearActiveChatStream();
     }
@@ -366,7 +366,7 @@ function initializeChatStateHistory() {
         try {
             appState.chatHistory = JSON.parse(localData) || [];
             if (appState.chatHistory.length > 0) {
-                stream.innerHTML = ''; // Wipe fallback boilerplate message
+                stream.innerHTML = ''; 
                 appState.chatHistory.forEach(msg => {
                     renderMessageBubble(msg.text, msg.bubbleType, false);
                 });
@@ -380,7 +380,7 @@ function initializeChatStateHistory() {
     }
 }
 
-// Interactive Sub-Component Builders (Chips & Carousels)
+// Generates clickable suggestion chips below bot responses
 function renderSuggestionChips(chipsArray) {
     const dock = document.getElementById('widgetDockPanel');
     if (!dock) return;
@@ -402,6 +402,7 @@ function renderSuggestionChips(chipsArray) {
     dock.appendChild(chipWrapper);
 }
 
+// Renders a horizontal carousel of cards for rich media responses
 function renderRichCarousel(cardsData) {
     const dock = document.getElementById('widgetDockPanel');
     if (!dock) return;
@@ -446,11 +447,13 @@ function renderRichCarousel(cardsData) {
     dock.appendChild(carouselContainer);
 }
 
+// Clears suggestion chips and carousels from the interaction area
 function clearInteractiveDock() {
     const dock = document.getElementById('widgetDockPanel');
     if (dock) dock.innerHTML = "";
 }
 
+// Resets the chat history and message stream UI
 function clearActiveChatStream() {
     const stream = document.getElementById('widgetMessageStream');
     if (stream) {
@@ -466,14 +469,11 @@ function clearActiveChatStream() {
     clearInteractiveDock();
 }
 
-// ==========================================
-// ASYNCHRONOUS NOTIFICATION SYSTEM (TOASTS)
-// ==========================================
+// Displays a non-intrusive notification toast with sound feedback
 function showToast(message, type = 'success') {
     const container = document.getElementById('toastContainer');
     if (!container) return;
 
-    // Map notification types to specific audio assets
     const soundMap = {
         'success': '/static/audio/success-sound.mp3',
         'error': '/static/audio/error-sound.mp3',
@@ -483,7 +483,6 @@ function showToast(message, type = 'success') {
 
     const audio = new Audio(soundMap[type]);
     
-    // Play sound and handle browser autoplay permissions smoothly
     audio.play().catch(error => {
         console.log("Audio playback delayed until user interacts with the page.", error);
     });
@@ -497,7 +496,6 @@ function showToast(message, type = 'success') {
 
     container.appendChild(toastElement);
 
-    // Minor structural delay to capture layout translation transitions smoothly
     setTimeout(() => { toastElement.classList.add('toast-show'); }, 20);
 
     setTimeout(() => {
@@ -507,25 +505,27 @@ function showToast(message, type = 'success') {
     }, 4000);
 }
 
-// Utility DOM Interactions
+// UI utility for toggling user profile dropdown
 function toggleProfileDropdown() {
     document.getElementById('profileDropdown').classList.toggle('show');
 }
 
+// UI utility to show a modal dialog
 function openModal(id) {
     const el = document.getElementById(id);
     if (el) el.classList.remove('hidden');
 }
 
+// UI utility to hide a modal dialog
 function closeModal(id) {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
 }
 
+// Closes current modal and opens another with reset inputs
 function switchModal(openId, closeId) {
     closeModal(closeId);
     
-    // Clear error messages and reset inputs for a clean state transition
     const targetModal = document.getElementById(openId);
     if (targetModal) {
         targetModal.querySelectorAll('.error-msg-block').forEach(err => err.classList.add('hidden'));
@@ -535,25 +535,25 @@ function switchModal(openId, closeId) {
     openModal(openId);
 }
 
+// Handles closing modals when clicking outside the content area
 function handleModalOutSideClick(event, modalId) {
-    // Implementation to close modal when clicking the overlay backdrop
     if (event.target.id === modalId) {
         closeModal(modalId);
     }
 }
-/**
- * Mobile Navigation Menu Toggler
- */
+
+// Toggles mobile sidebar navigation for smaller viewports
 function toggleMobileSidebar() {
     const sidebar = document.getElementById('mobilePopupSidebar');
     const backdrop = document.getElementById('sidebarBackdrop');
-
+    
     if (sidebar && backdrop) {
         sidebar.classList.toggle('active');
         backdrop.classList.toggle('active');
     }
 }
 
+// Toggles accordion panels for FAQ sections
 function toggleFaq(triggerElement) {
     const panel = triggerElement.nextElementSibling;
     const icon = triggerElement.querySelector('.faq-icon i');
@@ -567,6 +567,7 @@ function toggleFaq(triggerElement) {
     }
 }
 
+// Filters FAQ items based on user search input
 function filterFaqs() {
     const query = document.getElementById('faqSearch').value.toLowerCase();
     document.querySelectorAll('.faq-item').forEach(item => {
@@ -575,10 +576,10 @@ function filterFaqs() {
     });
 }
 
+// Configures global listeners and initial UI components
 function initializeDefaultStateViews() {
     renderSuggestionChips(['Features']);
     
-    // Intercept clicks outside structural drop menu limits
     window.onclick = function(e) {
         if (!e.target.matches('.profile-avatar')) {
             const dropdown = document.getElementById('profileDropdown');
@@ -589,6 +590,7 @@ function initializeDefaultStateViews() {
     }
 }
 
+// Escapes HTML characters to prevent XSS vulnerabilities
 function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
