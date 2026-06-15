@@ -1,8 +1,4 @@
-/**
- * Cyphra Corporate Architectural Color System Matrix
- * Adheres strictly to design constraints and WCAG 2.1 accessibility benchmarks
- */
-
+/* Core system color variables and design tokens */
 :root {
     --bg-primary: #141018;
     --bg-secondary: #141018f2;
@@ -16,35 +12,13 @@
     --border-interactive: #D62E6C;
     --username-crimson: #A2163E;
     
-    /* System Structural Bounds variables */
     --surface-card: #1C1722;
     --surface-bubble-user: #261D2F;
     --border-subtle: rgba(214, 46, 108, 0.15);
     --transition-standard: all 0.2s ease-in-out;
 }
 
-/* Light Theme Palette Overrides */
-[data-theme="light"] {
-    --bg-primary: #fcf8f5;
-    --bg-secondary: #d5cacef7;
-    --text-dark-contrast: #2A2735;
-    --text-main: #34383C;
-    
-    --event-grad-1: #A2163E;
-    --event-grad-2: #D62E6C;
-    
-    --badge-pink: #D62E6C;
-    --border-interactive: #D62E6C;
-    --username-crimson: #A2163E;
-    
-    /* System Structural Bounds variables */
-    --surface-card: #FFFFFF;
-    --surface-bubble-user: #F5ECEF;
-    --border-subtle: rgba(227, 130, 177, 0.2);
-    --transition-standard: all 0.2s ease-in-out;
-}
-
-/* Reset and Core Ingestion Layout Frameworks */
+/* Base resets and typography configuration */
 * {
     margin: 0;
     padding: 0;
@@ -65,6 +39,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Gradient text utility class */
 .text-gradient {
     background: linear-gradient(135deg, var(--event-grad-1) 0%, var(--event-grad-2) 100%);
     -webkit-background-clip: text;
@@ -73,9 +48,9 @@ body {
     color: transparent;
 }
 
-/* Top Dynamic Navigation Bar Component Layout */
+/* Navigation bar layout and sticky positioning */
 .navbar {
-    background-color: var(--bg-secondary); /* Updated from rgba(20, 16, 24, 0.95) */
+    background-color: var(--bg-secondary);
     border-bottom: 1px solid var(--border-subtle);
     padding: 16px 40px;
     display: flex;
@@ -146,7 +121,7 @@ body {
     gap: 12px;
 }
 
-/* Buttons Engine Styles */
+/* Button variants and interaction states */
 .btn {
     padding: 10px 20px;
     border-radius: 8px;
@@ -190,7 +165,7 @@ body {
 .btn-sm { padding: 6px 12px; font-size: 12px; }
 .w-full { width: 100%; }
 
-/* Dropdown Profile Component */
+/* User profile avatar and dropdown menu */
 .user-profile-menu {
     position: relative;
 }
@@ -257,28 +232,28 @@ body {
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-/* SPA Navigation View Shell definitions */
-.spa-container {
+/* Main application container and view transition management */
+.app-view-container {
     flex: 1;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
-.page-view {
+.app-view-stage {
     display: none;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 16px 40px;
-    animation: fadeIn 0.25s ease-in-out;
+    animation: viewportFadeIn 0.3s ease-out;
 }
 
-.page-view.active {
+.app-view-stage.active {
     display: block;
 }
 
-/* 1. Landing Hero Layout View */
+/* Landing page hero section layout */
 .hero-section {
     text-align: center;
     padding: 100px 20px;
@@ -315,7 +290,7 @@ body {
     border-radius: 12px;
 }
 
-/* 2. Platform Features View Layout */
+/* Features grid and card styling */
 .section-header {
     text-align: center;
     margin-bottom: 30px;
@@ -357,7 +332,7 @@ body {
 .feature-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
 .feature-card p { font-size: 14px; opacity: 0.7; line-height: 1.6; }
 
-/* 3. Subscription Comparison Grid Pricing Layout */
+/* Subscription pricing cards and grid */
 .pricing-grid {
     display: flex;
     justify-content: center;
@@ -366,21 +341,8 @@ body {
     margin-top: 40px;
 }
 
-.pricing-card {
+.pricing-card, .pricing-card-plus, .pricing-card.featured {
     background-color: var(--surface-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 40px;
-    flex: 1;
-    max-width: 360px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    transition: var(--transition-standard);
-}
-
-.pricing-card-plus {
-    border-color: var(--border-interactive);
     background: linear-gradient(180deg, #1C1722 0%, #17111E 100%);
     box-shadow: 0 10px 30px rgba(214, 46, 108, 0.1);
     border: 1px solid var(--border-subtle);
@@ -394,19 +356,10 @@ body {
     transition: var(--transition-standard);
 }
 
-.pricing-card.featured {
+.pricing-card.featured, .pricing-card-plus {
     border-color: var(--border-interactive);
     background: linear-gradient(180deg, #1C1722 0%, #17111E 100%);
     box-shadow: 0 10px 30px rgba(214, 46, 108, 0.1);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 40px;
-    flex: 1;
-    max-width: 360px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    transition: var(--transition-standard);
 }
 
 .pricing-card:hover, .pricing-card-plus:hover, .pricing-card.featured:hover {
@@ -435,7 +388,7 @@ body {
 
 .card-action { width: 100%; padding: 12px; }
 
-/* 4. Help Desk FAQ Accordion Component Layout */
+/* FAQ section search and accordion items */
 .search-box-container { max-width: 600px; margin: 0 auto 40px auto; }
 #faqSearch {
     width: 100%;
@@ -457,6 +410,7 @@ body {
     border-radius: 10px;
     margin-bottom: 16px;
     overflow: hidden;
+    transition: var(--transition-standard);
 }
 
 .faq-item:hover {
@@ -483,7 +437,7 @@ body {
 .faq-panel.open { max-height: 200px; }
 .faq-panel p { padding: 20px 24px; font-size: 14px; opacity: 0.8; line-height: 1.6; }
 
-/* 5. Protected Dashboard Interface Split View Grid Layout */
+/* Dashboard layout with sidebar and main viewport */
 #page-dashboard {
     max-width: 100%;
     padding: 0;
@@ -574,7 +528,7 @@ body {
     border: none;
 }
 
-/* Real-time Chat Engine Viewport Window Layout Component CSS */
+/* Floating chat widget and launcher button */
 .floating-widget-wrapper {
     position: fixed;
     bottom: 30px;
@@ -596,7 +550,7 @@ body {
     color: var(--text-main);
     font-size: 24px;
     transition: var(--transition-standard);
-    margin: 0px 0px 50px;
+    margin-bottom: 50px;
 }
 
 .floating-launcher:hover { transform: scale(1.05) rotate(5deg); }
@@ -623,6 +577,7 @@ body {
     overflow: hidden;
 }
 
+/* Chat header styling with bot identity and status */
 .chat-header {
     background: linear-gradient(135deg, var(--event-grad-1) 0%, var(--event-grad-2) 100%);
     padding: 16px 20px;
@@ -644,7 +599,7 @@ body {
 .btn-ctrl { background: none; border: none; color: var(--text-main); cursor: pointer; opacity: 0.8; font-size: 14px; transition: var(--transition-standard); }
 .btn-ctrl:hover { opacity: 1; transform: scale(1.1); }
 
-/* Chat Message Bubbles Stream Framework Layout */
+/* Chat message stream and bubble alignment */
 .message-stream-container {
     flex: 1;
     overflow-y: auto;
@@ -678,7 +633,7 @@ body {
 .bubble-time { font-size: 10px; opacity: 0.5; margin-top: 4px; padding: 0 4px; }
 .user-bubble .bubble-time { text-align: right; }
 
-/* Typing Stream Indicator Loading Vectors Component */
+/* Typing indicator animation */
 .animated-indicator-box { padding: 4px 8px !important; }
 .typing-dots span {
     font-weight: 900;
@@ -691,7 +646,7 @@ body {
 .typing-dots span:nth-child(2) { animation-delay: .2s; }
 .typing-dots span:nth-child(3) { animation-delay: .4s; }
 
-/* Interactive Dock Components (Chips & Multi-card Carousels) Layout */
+/* Interaction panel for chips and carousels */
 .interactive-dock-panel {
     padding: 0 20px 12px 20px;
     background-color: transparent;
@@ -760,11 +715,11 @@ body {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 3; 
-    line-clamp: 3; /* Standard property added to silence the vendorPrefix warning */
+    line-clamp: 3;
     -webkit-box-orient: vertical; 
 }
 
-/* Input Utility Dock Component Layer */
+/* Chat input area and utility buttons */
 .input-area-dock {
     padding: 16px 20px;
     border-top: 1px solid var(--border-subtle);
@@ -806,7 +761,7 @@ body {
 }
 .btn-send-execute:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(214, 46, 108, 0.3); }
 
-/* Global Site Footer Layout */
+/* Footer layout and navigation links */
 .site-footer {
     background-color: var(--bg-primary);
     border-top: 1px solid var(--border-subtle);
@@ -842,7 +797,7 @@ a:hover {
     color: #ffffff;
 }
 
-/* Authentication Dialog Matrix Modals Layer CSS Styles */
+/* Modal overlays and dialog boxes for authentication */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -921,6 +876,7 @@ a:hover {
     text-align: center;
 }
 
+/* Toast notification container and individual alerts */
 .toast-container {
     position: fixed;
     top: 24px;
@@ -966,6 +922,8 @@ a:hover {
 
 /* Utility States */
 .hidden { display: none !important; }
+.mobile-only { display: none !important; }
+.desktop-only { display: flex; }
 
 .message-stream-container::-webkit-scrollbar,
 .conversation-logs-list::-webkit-scrollbar {
@@ -988,7 +946,7 @@ a:hover {
     background-color: var(--border-interactive);
 }
 
-/* Responsive Media Viewport Breaks */
+/* Responsive breakpoint for mobile devices */
 @media (max-width: 850px) {
     .navbar { 
         padding: 16px 20px; 
@@ -998,7 +956,7 @@ a:hover {
     }
     .nav-links { display: none; }
     .desktop-only { display: none !important; }
-    .page-view { padding: 4px 20px; }
+    .app-view-stage { padding: 4px 20px; }
 
     .mobile-only { display: flex !important; }
 
@@ -1031,11 +989,10 @@ a:hover {
     }
 
     .hero-title { font-size: 38px; }
-    .chat-window-box { width: calc(100vw - 40px); right: -10px; margin-bottom: 116px; }
+    .chat-window-box { width: calc(100vw - 40px); right: -10px; margin-bottom: 35px; }
     .dashboard-split { flex-direction: column; }
     .dashboard-sidebar { width: 100%; height: 200px; }
 
-    /* Mobile Sidebar & Backdrop Enhancements */
     .sidebar-backdrop {
         position: fixed;
         top: 0;
