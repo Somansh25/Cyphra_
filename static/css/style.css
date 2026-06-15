@@ -240,7 +240,7 @@ body {
     position: relative;
 }
 
-.app-view-stage {
+.page-view {
     display: none;
     width: 100%;
     max-width: 1200px;
@@ -249,7 +249,7 @@ body {
     animation: fadeIn 0.25s ease-in-out;
 }
 
-.app-view-stage.active {
+.page-view.active {
     display: block;
 }
 
@@ -956,7 +956,7 @@ a:hover {
     }
     .nav-links { display: none; }
     .desktop-only { display: none !important; }
-    .app-view-stage { padding: 4px 20px; }
+    .page-view { padding: 4px 20px; }
 
     .mobile-only { display: flex !important; }
 
