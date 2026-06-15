@@ -246,7 +246,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 16px 40px;
-    animation: viewportFadeIn 0.3s ease-out;
+    animation: fadeIn 0.25s ease-in-out;
 }
 
 .app-view-stage.active {
