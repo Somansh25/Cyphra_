@@ -34,6 +34,7 @@ Pygments==2.19.2
 pyinstaller==6.20.0
 pyinstaller-hooks-contrib==2026.5
 pymongo[srv]==4.17.0
+python-dotenv==1.0.1
 python-engineio==4.13.1
 python-multipart==0.0.22
 python-socketio==5.16.1
