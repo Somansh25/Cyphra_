@@ -13,10 +13,24 @@
         "Greetings",
         "How are you?",
         "Hey",
-        "What's up"
+        "What's up?",
+        "Yo",
+        "Heya",
+        "Morning",
+        "Good day",
+        "Hey Cyphra",
+        "Anyone there?",
+        "Is anyone home?",
+        "Hello bot",
+        "Hiya"
       ],
       "responses": [
-        "Hello! Welcome to Cyphra. How can I assist you today?",
+        {
+          "text": "Hello! Welcome to Cyphra. I'm your architectural assistant. How can I help you optimize your experience today?",
+          "carousel": []
+        },
+        "Welcome back to the Cyphra console. How can I assist your workflow today?",
+        "Greetings! System is online and ready for your queries. What's on your mind?",
         "Hi there! I'm ready to help. What can I do for you?",
         "Greetings! How may I assist your conversational journey today?",
         {
@@ -40,13 +54,21 @@
         "Talk to you later",
         "I'm leaving",
         "Farewell",
-        "bye",
         "leave",
-        "exit"
+        "exit",
+        "Cya",
+        "Good night",
+        "Catch you later",
+        "Gotta go",
+        "Bye bye",
+        "End session",
+        "I'm done",
+        "Peace out",
+        "Talk soon"
       ],
       "responses": [
-        "Goodbye! Feel free to return anytime.",
-        "See you later! Have a wonderful day.",
+        "Ending session sequence. Cyphra will be here when you return. Have a productive day!",
+        "Goodbye! Your progress is cached. Feel free to return anytime.",
         "Take care! Thank you for visiting Cyphra.",
         {
           "text": "Thank you for engaging with Cyphra Core. Your session state remains fully preserved in safe local parameters. Have a great day ahead!",
@@ -67,12 +89,18 @@
         "Awesome, thanks",
         "Thank you so much",
         "awesome thanks",
-        "perfect"
+        "perfect",
+        "Ty",
+        "Thx",
+        "You're the best",
+        "That helps a lot",
+        "Thanks for the help",
+        "Much appreciated",
+        "You're helpful"
       ],
       "responses": [
-        "Happy to help! Let me know if you need anything else.",
-        "Anytime! Always here to assist.",
-        "You're very welcome!",
+        "Happy to help! My goal is to make your Cyphra experience seamless. Anything else on your mind?",
+        "Anytime! I'm optimized for your assistance. Let me know if you have more questions.",
         {
           "text": "It is my absolute pleasure! Let me know if there are any other architecture questions or layout validations required.",
           "carousel": []
@@ -92,11 +120,23 @@
         "I need motivation",
         "Feeling low",
         "Give me some encouragement",
-        "Give me some motivation"
+        "Feeling uninspired",
+        "Give me a quote",
+        "Cheer me up",
+        "I'm feeling stuck",
+        "I can't do this",
+        "Need a boost",
+        "I'm exhausted",
+        "Motivate me"
       ],
       "responses": [
-        "Remember that every great journey starts with a small step. Keep moving forward!",
-        "Challenges are what make success meaningful. Stay focused and motivated!",
+        {
+          "text": "I'm sorry to hear you're feeling low. Remember: even the most complex systems are built one line of code at a time. You've got this!",
+          "carousel": []
+        },
+        "Success is not final, failure is not fatal: it is the courage to continue that counts. Keep pushing, Cyphra is rooting for you!",
+        "Feeling stuck is just your brain's way of preparing for a breakthrough. Take a deep breath and take one small step today.",
+        "Every great journey starts with a single step. Don't look at the whole mountain; just look at the next step forward.",
         "Believe in yourself. You are capable of achieving incredible goals!"
       ]
     },
@@ -106,11 +146,24 @@
         "How do refunds work?",
         "Can I return an item?",
         "Refund process",
-        "How can I get a refund?"
+        "How can I get a refund?",
+        "Money back",
+        "Billing issue",
+        "I want to cancel",
+        "Cancel subscription",
+        "Return policy",
+        "Charge on my card",
+        "Payment failed",
+        "How to stop subscription"
       ],
       "responses": [
-        "Our refund process is straightforward. Standard subscription cancellations are processed within 5-7 business days. Please contact support@cyphra.com for specific order details.",
-        "To initiate a refund or return, you can navigate to Account Settings inside your profile or reach out to our dedicated help desk."
+        {
+          "text": "Regarding billing: You can manage, upgrade, or cancel your subscription directly from the 'Billing' tab in your Dashboard. For refund requests, please email somanshch875@gmail.com with your transaction ID.",
+          "carousel": []
+        },
+        "Our refund process is straightforward. Standard subscription cancellations are processed within 5-7 business days. For billing discrepancies, please reach out to our financial team at somanshch875@gmail.com.",
+        "To initiate a refund or return, you can navigate to Account Settings inside your profile. If you have a specific billing issue, I can guide you to our support desk.",
+        "Subscription management is located in your account settings. If you cancel, you will retain access to your tier until the end of the current billing cycle."
       ]
     },
     {
@@ -121,7 +174,13 @@
         "capabilities",
         "tell me about features",
         "platform features",
-        "modules"
+        "modules",
+        "What services do you offer?",
+        "Show me your tools",
+        "How can you help me?",
+        "Give me a tour",
+        "What is this site for?",
+        "List modules"
       ],
       "responses": [
         {
@@ -130,17 +189,17 @@
             {
               "title": "Contextual AI",
               "description": "Remembers flow context and handles complex matching smoothly.",
-              "badge": "Core"
+              "badge": "Logic"
             },
             {
               "title": "Rich UI Output",
               "description": "Supports suggestion chips, multi-card carousels, and file streams.",
-              "badge": "UX"
+              "badge": "Interface"
             },
             {
               "title": "Enterprise Security",
               "description": "Session encryption and XSS-safe response streams.",
-              "badge": "Security"
+              "badge": "Safety"
             }
           ]
         },
@@ -179,9 +238,20 @@
         "cost",
         "how much",
         "explore pricing",
-        "subscription"
+        "subscription",
+        "Is it free?",
+        "Do I have to pay?",
+        "Cheapest plan",
+        "How much does it cost?",
+        "Monthly fee",
+        "Annual plan",
+        "Upgrade cost"
       ],
       "responses": [
+        {
+          "text": "Cyphra is accessible to everyone. We offer a 'Starter Core' plan for ₹0, while our professional tiers provide advanced architectural tools for scaling.",
+          "carousel": []
+        },
         {
           "text": "Cyphra provides transparent tiering optimized for both growing setups and large-scale enterprise clusters:",
           "carousel": [
@@ -217,11 +287,23 @@
         "faq",
         "technical faq",
         "knowledge desk",
-        "how to use"
+        "how to use",
+        "I'm stuck",
+        "I need a guide",
+        "How does this work?",
+        "Documentation",
+        "User guide",
+        "Troubleshoot",
+        "Error help",
+        "Manual"
       ],
       "responses": [
         {
-          "text": "Our Knowledge Desk FAQ matrix is accessible on the main portal. Alternatively, ask me about 'features' or 'pricing' to check capabilities directly.",
+          "text": "I'm here to help! If you're stuck, you can check our technical FAQ on the Help page, or tell me specifically what you're trying to do (e.g., 'pricing' or 'features' or 'about').",
+          "carousel": []
+        },
+        {
+          "text": "Our Knowledge Desk FAQ matrix is accessible on the main portal. Alternatively, ask me about 'features' or 'pricing' or 'about' to check capabilities directly.",
           "carousel": []
         }
       ],
@@ -232,15 +314,80 @@
       ]
     },
     {
+      "intent": "about_cyphra",
+      "text": [
+        "What is Cyphra?",
+        "Who created you?",
+        "Tell me about Cyphra",
+        "About the bot",
+        "Who are you?",
+        "Who made Cyphra?",
+        "What's the story behind Cyphra?",
+        "What are your origins?",
+        "Creator info",
+        "About"
+      ],
+      "responses": [
+        {
+          "text": "I am Cyphra, a high-performance rule-based conversational entity designed to streamline platform interactions and automate architectural queries.",
+          "carousel": []
+        },
+        {
+          "text": "Cyphra is an advanced conversational framework designed for performance and security. I was built to demonstrate the power of rule-based logic combined with a modern UI.",
+          "carousel": [
+            {
+              "title": "The Vision",
+              "description": "To bridge the gap between complex rule-based logic and fluid human interaction.",
+              "badge": "Mission"
+            },
+            {
+              "title": "The Tech Stack",
+              "description": "Built with Python, JSON-driven intent matrices, and a responsive frontend.",
+              "badge": "Architecture"
+            }
+          ]
+        }
+      ],
+      "suggestions": [
+        "Platform Features",
+        "Technical FAQ"
+      ]
+    },
+    {
+      "intent": "contact_support",
+      "text": [
+        "contact support",
+        "talk to a human",
+        "email address",
+        "customer service",
+        "reach out",
+        "I need to speak to someone",
+        "Help desk contact",
+        "Support email",
+        "Human agent",
+        "Contact info",
+        "Phone number"
+      ],
+      "responses": [
+        "For direct architectural support or billing inquiries, please reach out to our human team at somanshch875@gmail.com.",
+        "I can solve most queries, but for complex issues, our support team is available via email at somanshch875@gmail.com or through the ticket system in your Dashboard.",
+        "Need a human? You can email us anytime at somanshch875@gmail.com. Our response time is typically within 24 hours."
+      ],
+      "suggestions": [
+        "Technical FAQ",
+        "Goodbye"
+      ]
+    },
+    {
       "intent": "fallback",
       "text": [
         ""
       ],
       "responses": [
-        "Sorry, I did not understand that. Please rephrase your question or try using one of our quick suggestions below.",
-        "I'm not completely sure I understand. Could you provide more details or pick a topic from the help menu?",
+        "I didn't quite catch that. Could you try rephrasing? Or use the suggestions below to explore what I can do.",
+        "That input doesn't match my current pattern matrix. Try asking about 'features', 'pricing', or 'help'.",
         {
-          "text": "I could not confidently match that input across our intent pattern matrices. Please rephrase or use one of our dedicated quick links:",
+          "text": "I'm still learning! I couldn't confidently match that request. Here are some things I can help with:",
           "carousel": []
         }
       ],
