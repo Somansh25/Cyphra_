@@ -42,11 +42,11 @@ function navigateTo(targetRoute) {
     
     appState.activeRoute = targetRoute;
     
-    // Toggle visibility of the target application view stage
-    document.querySelectorAll('.app-view-stage').forEach(view => {
+    // Toggle visibility of the target page view
+    document.querySelectorAll('.page-view').forEach(view => {
         view.classList.remove('active');
     });
-    const selectedView = document.getElementById(`view-${targetRoute}`);
+    const selectedView = document.getElementById(`page-${targetRoute}`);
     if (selectedView) selectedView.classList.add('active');
     
     // Update active state for navigation items
