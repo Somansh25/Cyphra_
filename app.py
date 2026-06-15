@@ -4,6 +4,7 @@
 import os
 import re
 import json
+from dotenv import load_dotenv
 import random
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session
@@ -11,7 +12,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import certifi
 from pymongo import MongoClient 
 
-# Application configuration and environment-based secret keys
+
+"""# Application configuration and environment-based secret keys
 app = Flask(__name__)
 app.secret_key = os.environ.get("CYPHRA_SECRET_KEY", "b3af9281cda1426ea9e1e55d5bb26cf4042617a2ee34")
 
@@ -19,6 +21,24 @@ app.secret_key = os.environ.get("CYPHRA_SECRET_KEY", "b3af9281cda1426ea9e1e55d5b
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #RULES_FILE = os.path.join(BASE_DIR, 'rules.json')
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb+srv://cyphra_admin:CHih3HTF-2am6Hm@cyphra-prod.hb4os4r.mongodb.net/cyphra-prod?appName=cyphra-prod")
+"""
+# Application configuration utilizing strict environment injection
+app = Flask(__name__)
+load_dotenv()
+# Retrieve secrets without fallback strings to prevent leaking credentials in source control
+CYPHRA_SECRET = os.environ.get("CYPHRA_SECRET_KEY")
+MONGO_URI_ENV = os.environ.get("MONGO_URI")
+
+# Halt application execution if the execution environment is insecure
+if not CYPHRA_SECRET or not MONGO_URI_ENV:
+    raise RuntimeError(
+        "CRITICAL CONFIGURATION ERROR: Both 'CYPHRA_SECRET_KEY' and 'MONGO_URI' "
+        "environment variables must be set before launching this server."
+    )
+
+app.secret_key = CYPHRA_SECRET
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MONGO_URI = MONGO_URI_ENV
 
 # Initialize database collection reference
 users_collection = None
@@ -27,7 +47,7 @@ db_error = None
 
 # Connect to MongoDB cluster with SSL certificate verification
 try:
-    client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
+    client = MongoClient(MONGO_URI, tls=True, tlsCAFile=certifi.where())
     db = client['cyphra-prod']
     users_collection = db['users']
     intents_collection = db['intents']
@@ -49,41 +69,13 @@ except Exception as e:
     db_error = str(e)
     app.logger.error(f"Critical Database Connectivity Interruption: {e}")
     
-# Placeholder for user cluster initialization
-def initialize_user_cluster():
-    pass
+import threading
 
-# Retrieve all users from the database for the application's identity matrix
-def load_authenticated_users():
-    user_matrix = {}
-    try:
-        for user in users_collection.find():
-            user_matrix[user['email']] = {
-                'name': user['name'],
-                'password': user['password']
-            }
-    except Exception as e:
-        app.logger.error(f"Failed to fetch identity maps from cloud database: {e}")
-    return user_matrix
+# Initialize a thread lock to control pipeline regeneration safety across concurrent requests
+PIPELINE_LOCK = threading.Lock()
 
-# Update or insert user records into the persistent database storage
-def save_authenticated_users(user_data_matrix):
-    try:
-        for email, details in user_data_matrix.items():
-            users_collection.update_one(
-                {'email': email},
-                {
-                    '$set': {
-                        'name': details['name'],
-                        'password': details['password']
-                    }
-                },
-                upsert=True 
-            )
-        return True
-    except Exception as e:
-        app.logger.error(f"Failed to sync identity updates to cloud database: {e}")
-        return False
+# Global cache for compiled intent regex patterns to improve response speed
+COMPILED_PIPELINE = []
 
 # Load chatbot intent and response rules from the MongoDB database
 def load_conversational_rules():
@@ -97,20 +89,41 @@ def load_conversational_rules():
         app.logger.error(f"Error streaming active conversational rules from MongoDB: {e}")
     return {"intents": []}
 
-# Global cache for compiled intent regex patterns to improve response speed
-COMPILED_PIPELINE = []
-
 # Pre-compile intent regex patterns with word boundaries to optimize matching
 def compile_optimized_intent_matrix():
-    raw_rules = load_conversational_rules()
-    
-    if not raw_rules.get("intents"):
-        app.logger.error("CRITICAL: No intents found in MongoDB. Chatbot will be unresponsive.")
+    global COMPILED_PIPELINE
+    COMPILED_PIPELINE = []
+    raw_records = []
+
+    # 1. Attempt to grab rules from cloud MongoDB via your loader
+    try:
+        raw_rules = load_conversational_rules()
+        if raw_rules and raw_rules.get("intents"):
+            raw_records = raw_rules.get("intents")
+    except Exception as e:
+        app.logger.warning(f"Cloud intelligence pipeline delayed or unreachable ({e}). Failing over...")
+
+    # 2. Local Fallback Cache: If MongoDB took too long or failed, read from your local rules.json
+    if not raw_records:
+        try:
+            local_path = os.path.join(BASE_DIR, 'rules.json')
+            if os.path.exists(local_path):
+                with open(local_path, 'r', encoding='utf-8') as f:
+                    local_data = json.load(f)
+                    raw_records = local_data.get('intents', [])
+                app.logger.info("Successfully fallback-loaded intent matrix out of local storage rules.json.")
+        except Exception as local_err:
+            app.logger.error(f"Failed to read local intent fallback data matrix: {local_err}")
+
+    # Exit cleanly if completely empty across both data providers
+    if not raw_records:
+        app.logger.error("CRITICAL: No intents found in MongoDB or local rules.json. Chatbot will be unresponsive.")
         return []
 
     compiled_intents_pipeline = []
     
-    for intent_block in raw_rules.get("intents", []):
+    # Loop through the records and compile patterns
+    for intent_block in raw_records:
         pattern_regex_list = []
         for text_pattern in intent_block.get("text", []):
             if text_pattern.strip():
@@ -125,7 +138,6 @@ def compile_optimized_intent_matrix():
             "suggestions": intent_block.get("suggestions", [])
         })
     
-    global COMPILED_PIPELINE
     COMPILED_PIPELINE = compiled_intents_pipeline
     return COMPILED_PIPELINE
 
@@ -146,8 +158,15 @@ def signup():
         password = data.get('password', '')
         name = data.get('name', '').strip()
         
-        if len(password) < 6:
-            return jsonify({'success': False, 'message': 'Password must be at least 6 characters.'}), 400
+        # Enforce length along with essential structural complexity requirements
+        if (len(password) < 8 or 
+            not any(char.isupper() for char in password) or 
+            not any(char.isdigit() for char in password)):
+            return jsonify({
+                'success': False, 
+                'message': 'Password complexity invalid. Ensure it is at least 8 characters long, '
+                           'and contains both an uppercase character and a number.'
+            }), 400
             
         if not email or not password or not name:
             return jsonify({'success': False, 'message': 'All fields are required.'}), 400
@@ -214,22 +233,24 @@ def chat():
         if not user_message or len(user_message) > 500:
             return jsonify({'bot_response': {'text': 'Empty message.'}}), 400
         
-        # Resilience check for serverless environments
-        global COMPILED_PIPELINE
+        # Resilience check with a double-checked locking mechanism for multi-threaded safety
         if not COMPILED_PIPELINE:
-            app.logger.info("Intent pipeline empty at runtime. Re-attempting database compilation...")
-            compile_optimized_intent_matrix()
+            with PIPELINE_LOCK:
+                # Confirm the state did not alter while acquiring the thread lock barrier
+                if not COMPILED_PIPELINE:
+                    app.logger.info("Intent pipeline empty at runtime. Thread-safely compiling matrix...")
+                    compile_optimized_intent_matrix()
         
         user_input_lower = user_message.lower()
-        # Returns current time if query mentions 'time'
-        if 'time' in user_input_lower:
+
+        # Use explicit word boundaries (\b) to prevent mid-word substring matching
+        if re.search(r'\btime\b', user_input_lower):
             res_text = f"The current time is: {datetime.now().strftime('%I:%M %p')}"
             return jsonify({'bot_response': {'text': res_text, 'carousel': []}, 'suggestions': ["Features"]}), 200
-        # Returns current date if query mentions 'date'
-        elif 'date' in user_input_lower:
+
+        elif re.search(r'\bdate\b', user_input_lower):
             res_text = f"Today's date is: {datetime.now().strftime('%B %d, %Y')}"
-            return jsonify({'bot_response': {'text': res_text, 'carousel': []}, 'suggestions': ["Features"]}), 200
-        
+            return jsonify({'bot_response': {'text': res_text, 'carousel': []}, 'suggestions': ["Features"]}), 200        
 
         matched_intent = None
         
@@ -275,7 +296,7 @@ def chat():
         }), 500
 
 # Run pre-compilation of intents before starting the web server
-compile_optimized_intent_matrix()
+#compile_optimized_intent_matrix()
 
 if __name__ == '__main__':
     app.run(debug=True)
